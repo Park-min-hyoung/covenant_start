@@ -1,24 +1,37 @@
 from collections import deque
 
-def bfs(queue):
+def bfs(queue, visited):
     global time
-    check_cnt = 0
+    old_check = 1
+    new_check = 0
 
     while queue:
         v = queue.popleft()
+
         if v == k:
             return 0
-        queue.append(v - 1)
-        queue.append(v + 1)
-        queue.append(v * 2)
 
-    time += 1
-    bfs(queue)
+        if not visited[v - 1]:
+            queue.append(v - 1)
+            visited[v - 1] = True
+        if not visited[v + 1]:
+            queue.append(v + 1)
+            visited[v + 1] = True
+        if not visited[v + 1]:
+            queue.append(v * 2)
+            visited[v * 2] = True
+        new_check += 1
+
+        if old_check == new_check:
+            old_check = len(queue)
+            new_check = 0
+            time += 1
 
 
 n, k = map(int, input().split())
 time = 0
-queue = deque([n])
-bfs(queue)
+visited = [False] * 100001
+visited[n] = True
 
-print(time + 1)
+bfs(deque([n]), visited)
+print(time)
