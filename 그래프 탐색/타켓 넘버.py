@@ -30,3 +30,5 @@ sqrt_check = [0] * 21
 
 print(bfs(0))
 
+#코드 수정
+
