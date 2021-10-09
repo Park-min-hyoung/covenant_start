@@ -1,29 +1,60 @@
-# stack을 이용해한 문제 풀이(정확도: 100%)
+from collections import deque
+
+def bfs():
+    queue = deque([])
+    for target in range(len(tickets)):
+        if tickets[target][0] == 'ICN':
+            result.append(tickets[target][1])
+            queue.append(tickets[target][1])
+            visited[target] = 1
+            break
+
+    while queue:
+        next_target = queue.popleft()
+        for i in range(len(tickets)):
+            if not visited[i] and tickets[i][0] == next_target:
+                result.append(tickets[i][1])
+                queue.append(tickets[i][1])
+                visited[i] = 1
+                break
+
 tickets = []
-for _ in range(5):
+for _ in range(3):
     a, b = input().split()
     tickets.append([a, b])
-tickets.sort(reverse=True)
+tickets.sort()
 
-routes = dict()
-for t1, t2 in tickets:
-    if t1 in routes:
-        routes[t1].append(t2)
-    else:
-        routes[t1] = [t2]
+result = ['ICN']
+visited = [0] * len(tickets)
+bfs()
+print(result)
 
-start = ['ICN']
-answer = []
-while start:
-    top = start[-1]
-
-    if top not in routes or len(routes[top]) == 0:
-        answer.append(start.pop())
-    else:
-        start.append(routes[top].pop())
-
-answer.reverse()
-print(answer)
+# stack을 이용해한 문제 풀이(정확도: 100%)
+# tickets = []
+# for _ in range(5):
+#     a, b = input().split()
+#     tickets.append([a, b])
+# tickets.sort(reverse=True)
+#
+# routes = dict()
+# for t1, t2 in tickets:
+#     if t1 in routes:
+#         routes[t1].append(t2)
+#     else:
+#         routes[t1] = [t2]
+#
+# start = ['ICN']
+# answer = []
+# while start:
+#     top = start[-1]
+#
+#     if top not in routes or len(routes[top]) == 0:
+#         answer.append(start.pop())
+#     else:
+#         start.append(routes[top].pop())
+#
+# answer.reverse()
+# print(answer)
 
 # DFS 이용해서 풀이(정확도: 75%)
 '''def dfs(i, tickets, visited, depth, answer):
@@ -51,7 +82,7 @@ print(answer)'''
 
 # 틀렸음
 '''
-1) stack 방법
+1) stack 방법(x)
 1. tickets 배열을 내림차순으로 정렬 해준 다음 for문을 돌면서 dict 자료구조를 이용해 key 값이 dict 변수(routes)에 없다면 
 key값과 value를 dict에 추가해준다. key 값이 dict 변수에 있다면 해당 key 값의 value에 새로운 value를 append 해준다
 (append 하기 위해서는 처음 key값과 value 값을 추가할때 value를 리스트로 추가해준다)
