@@ -1,60 +1,29 @@
-from collections import deque
-
-def bfs():
-    queue = deque([])
-    for target in range(len(tickets)):
-        if tickets[target][0] == 'ICN':
-            result.append(tickets[target][1])
-            queue.append(tickets[target][1])
-            visited[target] = 1
-            break
-
-    while queue:
-        next_target = queue.popleft()
-        for i in range(len(tickets)):
-            if not visited[i] and tickets[i][0] == next_target:
-                result.append(tickets[i][1])
-                queue.append(tickets[i][1])
-                visited[i] = 1
-                break
-
-tickets = []
-for _ in range(3):
+# stack을 이용해한 문제 풀이(정확도: 100%)
+'''tickets = []
+for _ in range(5):
     a, b = input().split()
     tickets.append([a, b])
-tickets.sort()
+tickets.sort(reverse=True)
 
-result = ['ICN']
-visited = [0] * len(tickets)
-bfs()
-print(result)
+routes = dict()
+for t1, t2 in tickets:
+    if t1 in routes:
+        routes[t1].append(t2)
+    else:
+        routes[t1] = [t2]
 
-# stack을 이용해한 문제 풀이(정확도: 100%)
-# tickets = []
-# for _ in range(5):
-#     a, b = input().split()
-#     tickets.append([a, b])
-# tickets.sort(reverse=True)
-#
-# routes = dict()
-# for t1, t2 in tickets:
-#     if t1 in routes:
-#         routes[t1].append(t2)
-#     else:
-#         routes[t1] = [t2]
-#
-# start = ['ICN']
-# answer = []
-# while start:
-#     top = start[-1]
-#
-#     if top not in routes or len(routes[top]) == 0:
-#         answer.append(start.pop())
-#     else:
-#         start.append(routes[top].pop())
-#
-# answer.reverse()
-# print(answer)
+start = ['ICN']
+answer = []
+while start:
+    top = start[-1]
+
+    if top not in routes or len(routes[top]) == 0:
+        answer.append(start.pop())
+    else:
+        start.append(routes[top].pop())
+
+answer.reverse()
+print(answer)'''
 
 # DFS 이용해서 풀이(정확도: 75%)
 '''def dfs(i, tickets, visited, depth, answer):
@@ -75,6 +44,7 @@ for i, ticket in enumerate(tickets):
         answer = []
         visited = [0] * len(tickets)
         dfs(i, tickets, visited, 0, answer)
+        
         if len(answer) == len(tickets) + 1:
             break
 
@@ -94,16 +64,17 @@ value값을 pop(가장 뒤의 값을 가져온다)한 다음 start에 넣어줌�
 그리고 다 제거되면 3번 조건을 반복함으로써 answer를 구할 수 있다
 5. 마지막으로 answer을 한번 더 뒤집어 준다
 
-2) dfs 방법
+2) dfs 방법(x)
 1. tickets를 오름차순으로 정렬해줌으로써 출발점이 'ICN'이 두개가 있더라도 도착점이 알파벳 순으로 빠른것이 선택될 것이다.
 2. 출발점이 'ICN'인 것이 선택되면 enumerate(for문 문법)를 이용해 전달인자 타켓 번호, 항공권 정보 배열, 방문 배열, 
 수행 횟수, 결과 배열을 전달해 dfs 메소드를 호출한다.
 3. 방문을 했으면 체크해주고 결과 배열에 그 값을 넣어준다
-4. 수행횟수를 조건이 만족되면 dfs 함수를 탈출한다
+4. 수행횟수 조건이 만족되면 dfs 함수를 탈출한다
 5. 4번 조건에 반대라면 for 문을 통해 항공권 정보 배열에서 현재의 도착점과 다음 출발점이 같은지를 확인하고
 같다면 수행횟수가 +1로 해주고 dfs 함수를 다시 호출한다.
-6. 만약 항공권 정보 배열에서 'ICN' 3개가 있고 가정하면 나머지 2개는 필요없으므로(어차피 알파벳 순으로 가장 빠른 도착점을 통해
+6. 만약 항공권 정보 배열에서 'ICN' 3개가 있다고 가정하면 나머지 2개는 필요없으므로(어차피 알파벳 순으로 가장 빠른 도착점을 통해
 dfs 함수를 수행시켰기 때문) 첫번째 'ICN'에 대해 dfs 함수가 수행된 후 결과 배열의 개수가 항공권 배열의 개수보다 크면 반복문을 탈출한다
-(첫번째 'ICN'이 dfs 메소드를 돈 후 무조건 결과값의 개수 항공권 정보 개수보다 크다는 보장이 없다 중간중간에 연결이 안되어 있을수도 있다.
-그러므로 2번째가 수행되고 또 안되면 3번째로 인해 정상적으로 결과값이 출력이 될것이다)
+(첫번째 'ICN'이 dfs 메소드를 돈 후 무조건 결과값의 개수 항공권 정보 개수보다 1이 크다는 보장이 없다 중간중간에 연결이 안되어 있을수도 있다.
+그러므로 2번째가 수행되고 또 안되면 3번째로 인해 정상적으로 결과값이 출력이 될것이다, 결과 배열의 수가 항공 정보 배열의 수보다 1많다는 사실이
+탐색이 끝났다는 말이다.
 '''
