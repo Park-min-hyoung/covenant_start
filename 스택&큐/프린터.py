@@ -2,7 +2,7 @@ priorities = list(map(int, input().split()))
 location = int(input())
 
 cnt = 0
-while len(priorities) != 0:
+while priorities:
     if location == 0:
         if priorities[0] < max(priorities):
             priorities.append(priorities.pop(0))
@@ -21,7 +21,7 @@ while len(priorities) != 0:
 
 print(cnt)
 
-# 틀렸음
+# 틀렸음(x)
 '''
 1. priorities 배열에 각각의 item 들이 모두 다르면 상관없지만 같은 것이 여러개 존재한다면 문제가 생기기 때문에 location = 0
 (priorities[0]가 출력을 할지 말지 결정 하는 구간 이므로)일때 처리해 주도록 한다
