@@ -41,7 +41,7 @@ for _ in range(case):
 
     solution()
 
-# 틀렸음
+# 틀렸음(x)
 '''
 1. list에 append 말고 extend 사용하면 list를 넣어줘도 [] 있는채로 안들어가고 값만 들어간다
 2. idx, value for in enumerate(list나 value, 시작번호) 이용하는 개념, 시작번호를 조작할 수 있다 
