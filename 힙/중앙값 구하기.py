@@ -1,43 +1,45 @@
-import heapq
 from sys import stdin
+import heapq
 
 def solution():
+    min_heap = []
+    max_heap = []
     middle = data[0]
-    minh = []
-    maxh = []
     result = [middle]
 
-    for idx, val in enumerate(data[1:], 1):
-        if val > middle:
-            heapq.heappush(maxh, val)
+    for i, val in enumerate(data[1:], 1):
+        if val <= middle:
+            heapq.heappush(min_heap, -val)
         else:
-            heapq.heappush(minh, -val)
+            heapq.heappush(max_heap, val)
 
-        if idx % 2 == 0:
-            if len(minh) < len(maxh):
-                heapq.heappush(minh, -middle)
-                middle = heapq.heappop(maxh)
-            elif len(minh) > len(maxh):
-                heapq.heappush(maxh, middle)
-                middle = -heapq.heappop(minh)
+        if i % 2 == 0:
+            if len(min_heap) > len(max_heap):
+                heapq.heappush(max_heap, middle)
+                middle = -heapq.heappop(min_heap)
+            elif len(min_heap) < len(max_heap):
+                heapq.heappush(min_heap, -middle)
+                middle = heapq.heappop(max_heap)
+
             result.append(middle)
 
     print(len(result))
     for i in range(len(result)):
         print(result[i], end=' ')
-        if i == 9 or (i % 10) == 9:
+        if i % 10 == 9:
             print()
+    print()
 
-case = int(stdin.readline().rstrip())
+case = int(input())
 for _ in range(case):
-    m = int(stdin.readline().rstrip())
+    num = int(stdin.readline().strip())
     data = []
-    if m % 10 == 0:
-        for _ in range(m // 10):
-            data.extend(list(map(int, stdin.readline().rstrip().split())))
+    if num % 10 == 0:
+        for _ in range(num // 10):
+            data.extend(list(map(int, stdin.readline().split())))
     else:
-        for _ in range(m // 10 + 1):
-            data.extend(list(map(int, stdin.readline().rstrip().split())))
+        for _ in range(num // 10 + 1):
+            data.extend(list(map(int, stdin.readline().split())))
 
     solution()
 
@@ -49,7 +51,7 @@ for _ in range(case):
 4. middle 값을 통해 새로 조회하는 값이 middle 보다 크면 maxh(최소 heap), 작으면 minh(최대 heap)에 넣어주고 홀 수 일때마다
 두 힙의 길이를 비교한다
 5. 홀 수 일때 두 힙의 데이터 개수의 합은 짝수 이므로 maxh의 개수가 minh의 개수보다 많을경우에는 maxh(최소 heap)의 가장 첫번째 값이
-middle 값이다(전의 middle 값은 -부호를 달고 minh(최대 heap)로 들어간다
+middle 값이다(이전의 middle 값은 -부호를 달고 minh(최대 heap)로 들어간다
 6. maxh의 개수가 minh의 개수보다 작을 경우 minh(최대 heap)의 가장 첫번째 값의 부호 반대 값이 middle 값이다
 (이전의 middle 값은 maxh(최소 heap)으로 들어간다'''
 
